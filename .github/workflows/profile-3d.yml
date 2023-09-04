@@ -1,0 +1,28 @@
+name: GitHub Profile Update
+
+on:
+  push:
+    branches:
+      - main
+  schedule: 
+    - cron: "0 8,20 * * *"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: generate-github-profile-3d-contrib
+    steps:
+      - uses: actions/checkout@v2
+      - uses: yoshi389111/github-profile-3d-contrib@0.6.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          USERNAME: ${{ github.repository_owner }}
+      - name: Commit and push files
+        uses: EndBug/add-and-commit@v7
+        with:
+          author_name: "Github Actions" 
+          author_email: "actions@github.com"
+          message: "Update Profile Summary"
+          add: "."
+          push: "https://github.com/barry-far/barry-far.git"
